@@ -63,17 +63,17 @@ async function init() {
     for (let i = 0; i < list.length; i++) {
       const info = list[i];
       try {
-        await taskGather(info);
-      } catch (error) {}
+        await taskGather(_.assign({}, info, { currentId: info.id }));
+      } catch (error) { }
     }
 
     for (let i = 0; i < list.length; i++) {
       const info = list[i];
-     try {
-      await taskMass(info);
-     } catch (error) {
-      
-     }
+      try {
+        await taskMass(_.assign({}, info, { currentId: info.id }));
+      } catch (error) {
+
+      }
     }
   } catch (err) {
     console.log('err:', err);

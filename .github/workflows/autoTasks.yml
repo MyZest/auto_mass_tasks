@@ -1,0 +1,33 @@
+name: autoTasks
+
+on:
+  push:
+    branches: ['master']
+
+  schedule:
+    - cron: '30,0 * * * *'  # 每20/40/60分执行
+    
+env:
+  TZ: UTC # 设置默认时区
+
+jobs:
+  autoTasks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2 
+
+      - name: Set up nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.19.3
+
+      - name: install
+        run: npm install
+
+      - name: run to start
+        env:
+         BASE_URL: ${{ secrets.BASE_URL }} 
+        run: npm run start
+

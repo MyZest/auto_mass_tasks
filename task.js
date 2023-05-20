@@ -19,7 +19,7 @@ async function taskMass(info) {
   if (!_.isEmpty(selectList)) {
     for (let i = 0; i < selectList.length; i++) {
       const element = selectList[i];
-      await singleMass(_.assign({}, element, info));
+      await singleMass(_.assign({}, info, element));
     }
   }
 }
@@ -61,19 +61,27 @@ async function init() {
     const list = _.get(data, 'list', []);
 
     for (let i = 0; i < list.length; i++) {
-      const info = list[i];
+      const info = _.assign({}, list[i], { currentId: list[i].id });
       try {
-        await taskGather(_.assign({}, info, { currentId: info.id }));
-      } catch (error) { }
+        await taskGather(info);
+        await request({
+          url: '/api/tg/updateLog',
+          method: 'post',
+          data: info,
+        });
+      } catch (error) {}
     }
 
     for (let i = 0; i < list.length; i++) {
-      const info = list[i];
+      const info = _.assign({}, list[i], { currentId: list[i].id });
       try {
-        await taskMass(_.assign({}, info, { currentId: info.id }));
-      } catch (error) {
-
-      }
+        await taskMass(info);
+        await request({
+          url: '/api/tg/updateLog',
+          method: 'post',
+          data: info,
+        });
+      } catch (error) {}
     }
   } catch (err) {
     console.log('err:', err);

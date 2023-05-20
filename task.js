@@ -10,7 +10,7 @@ async function singleMass(data) {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
-    }, data.mass_delay * 100 || 30000);
+    }, data.mass_delay * 1000 || 30000);
   });
 }
 
@@ -33,7 +33,7 @@ async function singleGather(data) {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
-    }, 30000);
+    }, data.mass_delay * 1000 || 30000);
   });
 }
 

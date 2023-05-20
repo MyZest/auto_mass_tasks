@@ -15,7 +15,7 @@ async function singleMass(data) {
 }
 
 async function taskMass(info) {
-  const selectList = _.get(info, 'select_list',[]);
+  const selectList = _.get(info, 'select_list', []);
   if (!_.isEmpty(selectList)) {
     for (let i = 0; i < selectList.length; i++) {
       const element = selectList[i];
@@ -48,7 +48,7 @@ async function taskGather(data) {
 
   for (let i = 0; i < gatherList.length; i++) {
     const result = gatherList[i];
-    singleGather(_.assign({}, data, result));
+    await singleGather(_.assign({}, data, result));
   }
 }
 
@@ -62,15 +62,21 @@ async function init() {
 
     for (let i = 0; i < list.length; i++) {
       const info = list[i];
-      await taskGather(info);
+      try {
+        await taskGather(info);
+      } catch (error) {}
     }
 
     for (let i = 0; i < list.length; i++) {
       const info = list[i];
+     try {
       await taskMass(info);
+     } catch (error) {
+      
+     }
     }
-  } catch (error) {
-    console.log('error:', error);
+  } catch (err) {
+    console.log('err:', err);
   }
 }
 

@@ -15,10 +15,16 @@ async function singleMass(data) {
 }
 
 async function taskMass(info) {
-  const selectList = _.get(info, 'select_list', []);
-  if (!_.isEmpty(selectList)) {
-    for (let i = 0; i < selectList.length; i++) {
-      const element = selectList[i];
+  const list = await request({
+    url: `/api/tg/getAllChats`,
+    method: 'get',
+    params: info,
+  });
+
+  const channelList = _.get(list, 'result', []);
+  if (!_.isEmpty(channelList)) {
+    for (let i = 0; i < channelList.length; i++) {
+      const element = channelList[i];
       await singleMass(_.assign({}, info, element));
     }
   }

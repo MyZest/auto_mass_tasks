@@ -64,7 +64,7 @@ async function init() {
       url: '/api/tg/getList',
       method: 'get',
     });
-    const list = _.get(data, 'list', []);
+    const list = _.get(data, 'list', []).filter(x => x.is_logined === 1)
 
     for (let i = 0; i < list.length; i++) {
       const info = _.assign({}, list[i], { currentId: list[i].id });
@@ -75,7 +75,7 @@ async function init() {
           method: 'post',
           data: info,
         });
-      } catch (error) {}
+      } catch (error) { }
     }
 
     for (let i = 0; i < list.length; i++) {
@@ -87,7 +87,7 @@ async function init() {
           method: 'post',
           data: info,
         });
-      } catch (error) {}
+      } catch (error) { }
     }
   } catch (err) {
     console.log('err:', err);
